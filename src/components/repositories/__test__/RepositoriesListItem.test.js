@@ -7,7 +7,9 @@ function renderComponent() {
     full_name: "facebook/react",
     language: "JavaScript",
     description: "A js library",
-    owner: "Facebook",
+    owner: {
+      login: "Facebook",
+    },
     name: "React",
     html_url: "https://github.com/facebook/react",
   };
@@ -16,9 +18,34 @@ function renderComponent() {
       <RepositoriesListItem repository={repository} />
     </MemoryRouter>
   );
+
+  return { repository };
 }
 
-it("should show a link to GitHub homepage for a given repository", async () => {
-  renderComponent();
+it("should render a link to GitHub homepage for a given repository", async () => {
+  const { repository } = renderComponent();
   await screen.findByRole("img", { name: /javascript/i });
+
+  const link = screen.getByRole("link", { name: /github repository/i });
+  expect(link).toHaveAttribute("href", repository.html_url);
+});
+
+it("should render a fileicon with the appropriate icon", async () => {
+  renderComponent();
+
+  const icon = await screen.findByRole("img", { name: /javascript/i });
+
+  expect(icon).toHaveClass("js-icon");
+});
+
+it("should render a link to the code editor page", async () => {
+  const { repository } = renderComponent();
+
+  await screen.findByRole("img", { name: /javascript/i });
+
+  const link = await screen.findByRole("link", {
+    name: new RegExp(repository.owner.login),
+  });
+
+  expect(link).toHaveAttribute("href", `/repositories/${repository.full_name}`);
 });
