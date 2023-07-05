@@ -18,6 +18,7 @@ function renderComponent() {
   );
 }
 
-it("should show a link to GitHub homepage for a given repository", () => {
+it("should show a link to GitHub homepage for a given repository", async () => {
   renderComponent();
+  await screen.findByRole("img", { name: /javascript/i });
 });
