@@ -19,17 +19,16 @@ createServer([
   },
 ]);
 
-const MockHomeRouter = () => {
-  return (
+const renderComponent = () => {
+  return render(
     <MemoryRouter>
       <HomeRoute />
     </MemoryRouter>
   );
 };
 
-
 it("should render two links for each language", async () => {
-  render(<MockHomeRouter />);
+  renderComponent();
 
   // Loop over each language
   const languages = [
